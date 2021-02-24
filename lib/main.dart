@@ -52,12 +52,28 @@ class MyHomePage extends StatelessWidget {
             // CardWidget use only margin not padding
             // margin: EdgeInsets.all(10),
             elevation: 5,
-            child: Column(
-              // ColumnWidget isn't use margin and padding
-              children: <Widget>[
-                TextField(),
-                TextField(),
-              ],
+            // ColumnWidget is wraped ContainerWidget because CardWidget and ColumnWidget isn't userful margin and padding
+            // We wanna put space between CardWidget and TextFieldWidget
+            child: Container(
+              padding: EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                // ColumnWidget isn't use margin and padding
+                children: <Widget>[
+                  TextField(
+                    // InputDecoration is many propaty for example add varidation etc
+                    decoration: InputDecoration(labelText: 'Title'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Amount'),
+                  ),
+                  FlatButton(
+                    child: Text('Add Transaction'),
+                    textColor: Colors.purple,
+                    onPressed: () {},
+                  )
+                ],
+              ),
             ),
           ),
           Column(
