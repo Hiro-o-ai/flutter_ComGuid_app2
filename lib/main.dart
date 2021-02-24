@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:reasonal_expenses_app/transaction.dart';
+import 'package:intl/intl.dart';
+
 import './transaction.dart';
 
 void main() => runApp(MyApp());
@@ -36,7 +37,7 @@ class MyHomePage extends StatelessWidget {
         title: Text('Flutter App'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Container(
@@ -45,6 +46,18 @@ class MyHomePage extends StatelessWidget {
               color: Colors.blue,
               child: Text('CHART!'),
               elevation: 5,
+            ),
+          ),
+          Card(
+            // CardWidget use only margin not padding
+            // margin: EdgeInsets.all(10),
+            elevation: 5,
+            child: Column(
+              // ColumnWidget isn't use margin and padding
+              children: <Widget>[
+                TextField(),
+                TextField(),
+              ],
             ),
           ),
           Column(
@@ -82,7 +95,11 @@ class MyHomePage extends StatelessWidget {
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            tx.date.toString(),
+                            // intlpacage
+                            // pattern1
+                            // DateFormat('yyyy/MM/dd').format(tx.date),
+                            // pattern2
+                            DateFormat.yMMMd().format(tx.date),
                             style: TextStyle(color: Colors.grey),
                           ),
                         ],
