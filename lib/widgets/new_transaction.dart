@@ -7,6 +7,16 @@ class NewTransaction extends StatelessWidget {
 
   NewTransaction(this.addTx);
 
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      return;
+    }
+    addTx(enteredTitle, enteredAmount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -25,6 +35,7 @@ class NewTransaction extends StatelessWidget {
               // InputDecoration is many propaty for example add varidation etc
               decoration: InputDecoration(labelText: 'Title'),
               controller: titleController,
+              onSubmitted: (_) => submitData,
               // onChanged: (val) {
               //   titleInput = val;
               // },
@@ -32,15 +43,16 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
+              // In iOS is not allow decimalplaces. if use it, you select TextInputType.numberWithOptions(decimal: true)
+              // so if you wanna make android and iOS application, you selected numberWith ...
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => submitData,
               // onChanged: (val) => amountInput = val,
             ),
             FlatButton(
               child: Text('Add Transaction'),
               textColor: Colors.purple,
-              onPressed: () {
-                addTx(
-                    titleController.text, double.parse(amountController.text));
-              },
+              onPressed: submitData,
             )
           ],
         ),

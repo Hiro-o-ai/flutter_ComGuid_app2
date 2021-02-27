@@ -16,6 +16,7 @@ class TransactionList extends StatelessWidget {
       // ただし、親のContainerがないとリストは表示されないし、エラーとなる
       // なぜならListViewは画面全体に表示させようとするが、画面上では上にwidgetが存在するため、画面サイズよりも大きくなるため
       child: ListView.builder(
+        // itemBuilderがないと膨大な量があることを前提に動くので、それを防ぐため
         itemBuilder: (ctx, index) {
           return Card(
             child: Row(
@@ -31,7 +32,7 @@ class TransactionList extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   child: Text(
                     // '\$' + tx.amount.toString(),
-                    '\$ ${transactions[index].amount}',
+                    '\$ ${transactions[index].amount.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
