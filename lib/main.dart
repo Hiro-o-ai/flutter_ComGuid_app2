@@ -10,11 +10,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter App',
+      title: 'Personal Expenses',
       theme: ThemeData(
         // accentColorなどを使用することで一部のWidgetがamber、他はpurpleといった具合となる
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
+        fontFamily: 'Quicksand',
+        // ThemeDataによってそのままfloatingactionbuttonの色の変更は非推奨なので、自分で変更した
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          // 十字の部分の色
+          foregroundColor: Colors.white,
+          // ボタンの大部分の色
+          backgroundColor: Colors.amber,
+        ),
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+        ),
       ),
       home: MyHomePage(),
     );
@@ -78,7 +100,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter App'),
+        title: Text(
+          'Personal Expenses',
+          // こちらの方がMaterialAppのtheme:のfontfamilyよりも優先される
+          // style: TextStyle(fontFamily: 'OpenSans'),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),

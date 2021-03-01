@@ -46,11 +46,11 @@ class TransactionList extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      transactions[index].title,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
+                    Text(transactions[index].title,
+                        // textthmeのtitle:を使用
+                        style: Theme.of(context).textTheme.title
+                        // TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                     Text(
                       // intlpacage
                       // pattern1
