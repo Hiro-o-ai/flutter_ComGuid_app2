@@ -18,6 +18,7 @@ class ChartBar extends StatelessWidget {
         Container(
           height: 60,
           width: 10,
+          // Widgetを重ねる時に使用する
           child: Stack(
             children: <Widget>[
               Container(
