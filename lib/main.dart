@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         // accentColorなどを使用することで一部のWidgetがamber、他はpurpleといった具合となる
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
+        errorColor: Colors.red,
         fontFamily: 'Quicksand',
         // ThemeDataによってそのままfloatingactionbuttonの色の変更は非推奨なので、自分で変更した
         floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -111,6 +112,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(
+      () {
+        _userTransaction.removeWhere((tx) => tx.id == id);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Chart(_recentTransactions),
-            TransactionList(_userTransaction),
+            TransactionList(_userTransaction, _deleteTransaction),
           ],
         ),
       ),
