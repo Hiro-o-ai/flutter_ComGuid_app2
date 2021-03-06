@@ -122,20 +122,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Personal Expenses',
-          // こちらの方がMaterialAppのtheme:のfontfamilyよりも優先される
-          // style: TextStyle(fontFamily: 'OpenSans'),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          ),
-        ],
+    final appBar = AppBar(
+      title: Text(
+        'Personal Expenses',
+        // こちらの方がMaterialAppのtheme:のfontfamilyよりも優先される
+        // style: TextStyle(fontFamily: 'OpenSans'),
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
       // 並んだWigetが端末の縦サイズを超えたらスクロールする
       // しなかった場合のエラー文
       // The specific RenderFlex in question is: RenderFlex#67c92 relayoutBoundary=up1 OVERFLOWING
@@ -144,16 +146,28 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // Container(
+            //   width: double.infinity,
+            //   child: Card(
+            //     color: Colors.blue,
+            //     child: Text('CHART!'),
+            //     elevation: 5,
+            //   ),
+            // ),
             Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text('CHART!'),
-                elevation: 5,
-              ),
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.4,
+              child: Chart(_recentTransactions),
             ),
-            Chart(_recentTransactions),
-            TransactionList(_userTransaction, _deleteTransaction),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.bottom) *
+                  0.6,
+              child: TransactionList(_userTransaction, _deleteTransaction),
+            ),
           ],
         ),
       ),
