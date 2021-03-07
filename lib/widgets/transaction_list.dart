@@ -16,23 +16,27 @@ class TransactionList extends StatelessWidget {
         // ただし、親のContainerがないとリストは表示されないし、エラーとなる
         // なぜならListViewは画面全体に表示させようとするが、画面上では上にwidgetが存在するため、画面サイズよりも大きくなるため
         transactions.isEmpty
-            ? Column(
-                children: <Widget>[
-                  Text(
-                    'No transactions added yet!',
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 200,
-                    child: Image.asset(
-                      'assets/image/waiting.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
+            ? LayoutBuilder(
+                builder: (ctx, constraints) {
+                  return Column(
+                    children: <Widget>[
+                      Text(
+                        'No transactions added yet!',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: constraints.maxHeight * 0.6,
+                        child: Image.asset(
+                          'assets/image/waiting.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               )
             : ListView.builder(
                 // itemBuilderがないと膨大な量があることを前提に動くので、それを防ぐため
