@@ -7,6 +7,7 @@ import './widgets/chart.dart';
 import './models/transaction.dart';
 
 void main() {
+  // 横画面にならない
   // WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
