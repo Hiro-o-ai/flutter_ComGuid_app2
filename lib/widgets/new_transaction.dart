@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import './adaptive_flat_botton.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -69,6 +74,7 @@ class _NewTransactionState extends State<NewTransaction> {
             crossAxisAlignment: CrossAxisAlignment.end,
             // ColumnWidget isn't use margin and padding
             children: <Widget>[
+              // CupertinoTextField(placeholder: '',),もあるよ
               TextField(
                 // InputDecoration is many propaty for example add varidation etc
                 decoration: InputDecoration(labelText: 'Title'),
@@ -98,16 +104,7 @@ class _NewTransactionState extends State<NewTransaction> {
                             : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
                       ),
                     ),
-                    FlatButton(
-                      textColor: Theme.of(context).primaryColor,
-                      onPressed: _presentDatePicker,
-                      child: Text(
-                        'Choose Date',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    AdaptiveFlatButton('Choose Date', _presentDatePicker),
                   ],
                 ),
               ),

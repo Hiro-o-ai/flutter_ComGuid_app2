@@ -18,6 +18,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  // returnでPlatform.isiOS ? Cupertinoapp() : Materialとした方がおすすめ
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -191,7 +192,10 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text('show Chart'),
+                  Text(
+                    'show Chart',
+                    style: Theme.of(context).textTheme.title,
+                  ),
                   Switch.adaptive(
                     activeColor: Theme.of(context).accentColor,
                     value: _showChart,
