@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 
@@ -134,19 +137,34 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final appBar = AppBar(
-      title: Text(
-        'Personal Expenses',
-        // こちらの方がMaterialAppのtheme:のfontfamilyよりも優先される
-        // style: TextStyle(fontFamily: 'OpenSans'),
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTransaction(context),
-        ),
-      ],
-    );
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text(
+              'Personal Expenses',
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: Icon(CupertinoIcons.add),
+                  onTap: () => _startAddNewTransaction(context),
+                ),
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text(
+              'Personal Expenses',
+              // こちらの方がMaterialAppのtheme:のfontfamilyよりも優先される
+              // style: TextStyle(fontFamily: 'OpenSans'),
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              ),
+            ],
+          );
 
     final txListWidget = Container(
       height: (mediaQuery.size.height -
@@ -155,13 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
           0.7,
       child: TransactionList(_userTransaction, _deleteTransaction),
     );
-
-    return Scaffold(
-      appBar: appBar,
-      // 並んだWigetが端末の縦サイズを超えたらスクロールする
-      // しなかった場合のエラー文
-      // The specific RenderFlex in question is: RenderFlex#67c92 relayoutBoundary=up1 OVERFLOWING
-      body: SingleChildScrollView(
+    final pageBody = SafeArea(
+      child: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,7 +192,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text('show Chart'),
-                  Switch(
+                  Switch.adaptive(
+                    activeColor: Theme.of(context).accentColor,
                     value: _showChart,
                     onChanged: (val) {
                       setState(
@@ -214,13 +228,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // floatingActionButtonは画面のwidgetと重なってもエラーとならない。おそらくレイヤーがことなり、Scaffoldのbodyの上にあると思われる
-      // widgettree上ではappbarと同じ海藻にある
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: pageBody,
+            navigationBar: appBar,
+          )
+        : Scaffold(
+            appBar: appBar,
+            // 並んだWigetが端末の縦サイズを超えたらスクロールする
+            // しなかった場合のエラー文
+            // The specific RenderFlex in question is: RenderFlex#67c92 relayoutBoundary=up1 OVERFLOWING
+            body: pageBody,
+            // floatingActionButtonは画面のwidgetと重なってもエラーとならない。おそらくレイヤーがことなり、Scaffoldのbodyの上にあると思われる
+            // widgettree上ではappbarと同じ海藻にある
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _startAddNewTransaction(context),
+                  ),
+          );
   }
 }
