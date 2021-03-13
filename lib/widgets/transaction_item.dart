@@ -1,9 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
 
-class TransactionItem extends StatelessWidget {
+class TransactionItem extends StatefulWidget {
   const TransactionItem({
     Key key,
     @required this.transaction,
@@ -12,6 +14,26 @@ class TransactionItem extends StatelessWidget {
 
   final Transaction transaction;
   final Function deleteTx;
+
+  @override
+  _TransactionItemState createState() => _TransactionItemState();
+}
+
+class _TransactionItemState extends State<TransactionItem> {
+  Color _bgColor;
+
+  @override
+  void initState() {
+    const availbleColors = [
+      Colors.red,
+      Colors.black,
+      Colors.blue,
+      Colors.purple,
+    ];
+
+    _bgColor = availbleColors[Random().nextInt(4)];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +50,37 @@ class TransactionItem extends StatelessWidget {
           height: 60,
           width: 60,
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
+            // color: Theme.of(context).primaryColor,
+            // 背景にランダムな色が入るようになっている。しかしこの色はそのwidgetに入っているのではなく、1番目に作られたリストのような位置も含めたwidgetのことを示す
+            // なぜならここに書いているのはwidgettreeに当たるが、実際に表示されているのはelementtreeのwidgetになる。そしてwidgettreeのwidgetの情報を参照している。
+            // このことが重要で参照しているだけなので、deleteボタンを押して消えるのはwidgettreeのwidgetだけで(コードに書いてあるのはwidgettreeのwidgetを削除することだから)
+            // 2番目のwidgetが1番目のwidget(削除された方)になり、結果的に2番目のelementtreeのwidgetが参照できなくなり、削除されることとなる
+            color: _bgColor,
             shape: BoxShape.circle,
           ),
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: FittedBox(
-              child: Text('\$ ${transaction.amount.toStringAsFixed(2)}'),
+              child: Text('\$ ${widget.transaction.amount.toStringAsFixed(2)}'),
             ),
           ),
         ),
-        title:
-            Text(transaction.title, style: Theme.of(context).textTheme.title),
+        title: Text(widget.transaction.title,
+            style: Theme.of(context).textTheme.title),
         subtitle: Text(
-          DateFormat.yMMMd().format(transaction.date),
+          DateFormat.yMMMd().format(widget.transaction.date),
         ),
         trailing: MediaQuery.of(context).size.width > 460
             ? FlatButton.icon(
                 icon: const Icon(Icons.delete),
                 label: const Text('Delete'),
                 textColor: Theme.of(context).errorColor,
-                onPressed: () => deleteTx(transaction.id),
+                onPressed: () => widget.deleteTx(widget.transaction.id),
               )
             : IconButton(
                 icon: const Icon(Icons.delete),
                 color: Theme.of(context).errorColor,
-                onPressed: () => deleteTx(transaction.id),
+                onPressed: () => widget.deleteTx(widget.transaction.id),
               ),
       ),
     );

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -40,6 +38,7 @@ class _NewTransactionState extends State<NewTransaction> {
     super.didUpdateWidget(oldWidget);
   }
 
+  // new_transactionSheetが閉じられた時に起動
   @override
   void dispose() {
     print('dispose');
